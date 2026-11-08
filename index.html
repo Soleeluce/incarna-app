@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Incarna">
+<meta name="theme-color" content="#FBEFEF">
+<title>Metodo Incarna</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:#FBEFEF;color:#2E3B33;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+#app{max-width:520px;margin:0 auto;padding:20px 16px 40px}
+.top{text-align:center;margin:8px 0 16px}
+.top h1{font-family:Georgia,"Times New Roman",serif;font-size:28px;font-weight:400;margin:0;color:#2E3B33}
+.top span{display:block;font-size:14px;color:#5C6B60;margin-top:4px}
+.nav{display:flex;gap:8px;margin:0 0 14px}
+.nav button{flex:1;border-radius:22px;padding:12px 6px;font-size:15px;background:#F6DEDF;border:1px solid #E3B9BB;color:#2E3B33;cursor:pointer;font-family:inherit}
+.nav button.on{background:#4F6B55;border-color:#4F6B55;color:#fff}
+.card{background:#fff;border:1px solid #EBCFD0;border-radius:18px;padding:20px}
+h2{font-family:Georgia,"Times New Roman",serif;font-size:21px;font-weight:400;line-height:1.4;margin:0 0 12px;color:#2E3B33}
+p{font-size:16px;line-height:1.6;margin:0 0 12px}
+.sm{font-size:13px;color:#5C6B60;margin:0 0 6px}
+textarea{width:100%;min-height:110px;background:#FBEFEF;color:#2E3B33;border:1px solid #E3B9BB;border-radius:12px;padding:12px;font-size:16px;font-family:inherit;line-height:1.5}
+textarea:focus,button:focus-visible{outline:2px solid #4F6B55;outline-offset:2px}
+.go{background:#4F6B55;color:#fff;border:none;border-radius:14px;padding:14px 18px;font-size:16px;font-weight:600;width:100%;cursor:pointer;margin-top:10px;font-family:inherit}
+.ghost{background:transparent;border:1px solid #4F6B55;color:#2F4A3A;border-radius:14px;padding:12px 16px;font-size:15px;width:100%;cursor:pointer;font-family:inherit}
+.err{font-size:14px;color:#A32D2D;margin:6px 0 0;min-height:20px}
+.ent{background:#FBEFEF;border:1px solid #EBCFD0;border-radius:12px;padding:12px;margin:12px 0 0}
+.ent p{margin:0 0 6px;font-size:15px}
+.bar{height:8px;background:#F0DADB;border-radius:4px;overflow:hidden;margin:0 0 14px}
+.bar i{display:block;height:100%;background:#6F8F72;transition:width .25s}
+.wk{font-family:Georgia,"Times New Roman",serif;font-size:17px;color:#2F4A3A;margin:20px 0 10px}
+.day{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:#FBEFEF;border:1px solid #EBCFD0;border-radius:14px;padding:12px;margin:0 0 10px;cursor:pointer;font-family:inherit;color:#2E3B33}
+.day.ok{background:#E6EEDF;border-color:#9DB59D}
+.ck{flex:0 0 24px;width:24px;height:24px;border-radius:50%;border:2px solid #4F6B55;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;margin-top:1px}
+.day.ok .ck{background:#4F6B55}
+.tt{font-size:15px;font-weight:600;display:block;margin:0 0 3px}
+.xx{font-size:14px;line-height:1.5;color:#3F4D44;display:block}
+.opt{display:block;width:100%;text-align:left;background:#F6DEDF;border:1px solid #E3B9BB;border-radius:14px;padding:14px;margin:0 0 10px;font-size:16px;line-height:1.45;color:#2E3B33;cursor:pointer;font-family:inherit}
+.opt.sel{background:#DCE7D5;border:2px solid #4F6B55;padding:13px}
+.tag{display:inline-block;background:#DCE7D5;color:#2F4A3A;font-size:13px;padding:4px 12px;border-radius:12px;margin-bottom:12px}
+.cta{background:#DCE7D5;border-radius:14px;padding:16px;margin:14px 0}
+.cta p{margin:0;color:#2F4A3A}
+.foot{font-size:13px;color:#5C6B60;text-align:center;margin:20px 0 0}
+</style>
+</head>
+<body>
+<div id="app">
+<div class="top"><h1>Metodo Incarna</h1><span>Il tuo spazio per tornare a te</span></div>
+<div class="nav"><button data-t="d" class="on">Diario</button><button data-t="p">21 giorni</button><button data-t="q">Quiz</button></div>
+<div class="card" id="v"></div>
+<p class="foot">@gllogadora__ · dhurata.dora_glloga__</p>
+</div>
+<script>
+var KEY="incarna-v1";
+var S={entries:[],done:[],quiz:""};
+try{var raw=localStorage.getItem(KEY);if(raw){S=JSON.parse(raw);}}catch(e){}
+if(!S.entries)S.entries=[];
+if(!S.done||S.done.length!==21){S.done=[];for(var z0=0;z0<21;z0++){S.done.push(false);}}
+if(!S.quiz)S.quiz="";
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+var v=document.getElementById("v"),tab="d";
+var DQ=["Come stai davvero oggi, senza filtri?","Cosa hai fatto oggi solo per te?","Quale peso porti addosso che non è tuo?","Di cosa hai bisogno in questo momento?","Cosa ti ha fatto sentire viva oggi?","Cosa vorresti dire a te stessa, come direbbe una persona che ti vuole bene?","Quale piccolo passo puoi fare domani per te?"];
+var WK=["Settimana 1 · Fermati e ascolta","Settimana 2 · Lascia andare","Settimana 3 · Incarna"];
+var DAYS=[
+["Respira","Prenditi 5 minuti di silenzio, poi scrivi come stai davvero."],
+["Nomina","Scrivi 3 emozioni che hai provato oggi, senza giudicarle."],
+["Osserva","Nota quante volte oggi dici sì quando vorresti dire no."],
+["Ascolta","Fermati un momento e scrivi dove senti più peso oggi."],
+["Verità","Scrivi una cosa che non dici mai ad alta voce."],
+["Silenzio","10 minuti senza telefono, solo per te."],
+["Bilancio","Rileggi la settimana e scrivi cosa hai scoperto di te."],
+["Il peso","Scrivi una cosa che porti per gli altri e che oggi puoi posare."],
+["I confini","Scegli un no da dire oggi con gentilezza."],
+["Il controllo","Lascia andare una cosa che di solito controlli tu."],
+["Il perdono","Scrivi una lettera a te stessa. Non devi inviarla a nessuno."],
+["Lo spazio","Libera un angolo della casa o del telefono."],
+["La paura","Scrivi di cosa hai paura e cosa faresti se non ne avessi."],
+["Bilancio","Rileggi la settimana e scrivi cosa hai lasciato andare."],
+["Il bisogno","Scegli un tuo bisogno e rispettalo oggi."],
+["Il desiderio","Scrivi cosa desideri davvero, senza scuse."],
+["La cura","Fai un piccolo gesto di cura solo per te."],
+["La voce","Dì ad alta voce una frase che inizia con \"Io voglio\"."],
+["La visione","Descrivi come vuoi vivere tra un anno."],
+["Il passo","Scegli il primo passo concreto e mettilo in agenda."],
+["Incarna","Scrivi chi sei diventata in questi 21 giorni."]
+];
+var QZ=[
+{t:"Dopo una giornata pesante, cosa fai?",o:[["Penso a tutti gli altri prima che a me","sal"],["Rimetto in ordine casa e agenda","con"],["Mi rifugio nei miei pensieri e nei \"e se\"","sog"],["Stringo i denti e vado avanti","gue"]]},
+{t:"Quando qualcuno ti chiede aiuto...",o:[["Dico sì anche se sono stanca","sal"],["Organizzo tutto io, a modo mio","con"],["Prometto più di quello che riesco","sog"],["Faccio io, non voglio pesare su nessuno","gue"]]},
+{t:"Quale frase ti somiglia di più?",o:[["\"Prima gli altri, poi vediamo\"","sal"],["\"Se non lo faccio io, non va bene\"","con"],["\"Un giorno cambierò le cose\"","sog"],["\"Non mi fermo, non posso\"","gue"]]},
+{t:"Quando senti che dentro qualcosa non va...",o:[["Faccio finta di niente per non pesare","sal"],["Cerco di tenere tutto sotto controllo","con"],["Aspetto un segno o il momento giusto","sog"],["Mi butto nel fare per non pensarci","gue"]]},
+{t:"Cosa temi di più?",o:[["Deludere chi amo","sal"],["Perdere il controllo","con"],["Restare ferma con i miei sogni","sog"],["Mostrarmi fragile","gue"]]},
+{t:"Cosa desideri davvero, in questo momento?",o:[["Che qualcuno si prenda cura di me","sal"],["Sentirmi al sicuro senza controllare tutto","con"],["Dare forma ai miei sogni","sog"],["Fermarmi senza sentirmi in colpa","gue"]]}
+];
+var R={
+sal:{n:"La Salvatrice",d:"Sei quella che c'è sempre per tutti. Intanto i tuoi bisogni restano in fondo alla lista.",p:"Prossimo passo: metterti sulla lista, per prima."},
+con:{n:"La Controllata",d:"Hai in mano ogni dettaglio. Tenere tutto sotto controllo però ti stanca.",p:"Prossimo passo: lasciare andare un piccolo pezzo alla volta."},
+sog:{n:"La Sognatrice",d:"Hai visione e sensibilità, ma aspetti il momento perfetto.",p:"Prossimo passo: trasformare un sogno in un gesto concreto."},
+gue:{n:"La Guerriera",d:"Vai avanti qualunque cosa succeda. Pensi che fermarti sia debolezza.",p:"Prossimo passo: capire che riposare fa parte della tua forza."}
+};
+var qi=0,sc=null,pk=null;
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function render(){
+ var b=document.querySelectorAll(".nav button");
+ for(var i=0;i<b.length;i++){b[i].className=b[i].getAttribute("data-t")==tab?"on":"";}
+ if(tab=="d")rd();else if(tab=="p")rp();else rq();
+}
+function rd(){
+ var q=DQ[new Date().getDay()%7];
+ var h='<p class="sm">La domanda di oggi</p><h2>'+q+'</h2><textarea id="tx" placeholder="Scrivi qui, solo per te"></textarea><p class="err" id="er"></p><button class="go" id="sv">Salva nel diario</button>';
+ for(var i=S.entries.length-1;i>=0;i--){h+='<div class="ent"><p class="sm">'+esc(S.entries[i].d)+'</p><p>'+esc(S.entries[i].q)+'</p><p>'+esc(S.entries[i].a)+'</p></div>';}
+ v.innerHTML=h;
+ var tx=document.getElementById("tx");
+ tx.oninput=function(){document.getElementById("er").textContent="";};
+ document.getElementById("sv").onclick=function(){
+  var s=tx.value.trim();
+  if(!s){document.getElementById("er").textContent="Scrivi qualcosa prima di salvare.";return;}
+  S.entries.push({d:new Date().toLocaleDateString("it-IT",{day:"numeric",month:"long"}),q:q,a:s});save();rd();
+ };
+}
+function rp(){
+ var n=0;for(var i=0;i<21;i++){if(S.done[i])n++;}
+ var h='<h2>Il tuo percorso di 21 giorni</h2><p class="sm">'+n+' di 21 giorni completati</p><div class="bar"><i style="width:'+Math.round(n/21*100)+'%"></i></div>';
+ for(var j=0;j<21;j++){
+  if(j%7==0){h+='<p class="wk">'+WK[j/7]+'</p>';}
+  h+='<button class="day'+(S.done[j]?" ok":"")+'" data-j="'+j+'"><span class="ck">'+(S.done[j]?"✓":"")+'</span><span><span class="tt">Giorno '+(j+1)+' · '+DAYS[j][0]+'</span><span class="xx">'+DAYS[j][1]+'</span></span></button>';
+ }
+ if(n==21){h+='<div class="cta"><p>Hai completato i 21 giorni. Scrivimi in DM la parola CHIAMATA e facciamo una chiamata conoscitiva.</p></div>';}
+ v.innerHTML=h;
+ var bs=v.querySelectorAll(".day");
+ for(var k=0;k<bs.length;k++){bs[k].onclick=function(){var j=+this.getAttribute("data-j");var y=window.pageYOffset;S.done[j]=!S.done[j];save();rp();window.scrollTo(0,y);};}
+}
+function rq(){
+ if(S.quiz){return rr();}
+ if(!sc){sc={sal:0,con:0,sog:0,gue:0};qi=0;}
+ var q=QZ[qi];
+ var h='<div class="bar"><i style="width:'+Math.round(qi/QZ.length*100)+'%"></i></div><p class="sm">Domanda '+(qi+1)+' di '+QZ.length+'</p><h2>'+q.t+'</h2>';
+ for(var k=0;k<4;k++){h+='<button class="opt" data-k="'+k+'">'+q.o[k][0]+'</button>';}
+ h+='<p class="err" id="er"></p><button class="go" id="nx">'+(qi==QZ.length-1?"Scopri il risultato":"Avanti")+'</button>';
+ v.innerHTML=h;pk=null;
+ var os=v.querySelectorAll(".opt");
+ for(var m=0;m<os.length;m++){os[m].onclick=function(){pk=+this.getAttribute("data-k");for(var z=0;z<os.length;z++){os[z].className="opt";}this.className="opt sel";document.getElementById("er").textContent="";};}
+ document.getElementById("nx").onclick=function(){
+  if(pk===null){document.getElementById("er").textContent="Scegli una risposta per continuare.";return;}
+  sc[q.o[pk][1]]++;qi++;
+  if(qi>=QZ.length){var w="sal",k2;for(k2 in sc){if(sc[k2]>sc[w])w=k2;}S.quiz=w;save();}
+  rq();
+ };
+}
+function rr(){
+ var r=R[S.quiz];
+ v.innerHTML='<span class="tag">Il tuo risultato</span><h2>'+r.n+'</h2><p>'+r.d+'</p><p>'+r.p+'</p><div class="cta"><p>Vuoi capire come sciogliere questo schema? Scrivimi in DM la parola CHIAMATA e fissiamo una chiamata conoscitiva.</p></div><button class="ghost" id="rf">Rifai il test</button>';
+ document.getElementById("rf").onclick=function(){S.quiz="";sc=null;save();rq();};
+}
+var nb=document.querySelectorAll(".nav button");
+for(var i=0;i<nb.length;i++){nb[i].onclick=function(){tab=this.getAttribute("data-t");render();};}
+render();
+</script>
+</body>
+</html>
